@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cac/assignment/assignment_page.dart';
+import 'package:flutter_cac/cart/shopping_cart.dart';
+import 'package:flutter_cac/common/strings.dart';
+import 'package:flutter_cac/home/home_page.dart';
+import 'package:flutter_cac/mine/mine_page.dart';
 
 class NavigationIconView {
   NavigationIconView({
@@ -68,20 +73,81 @@ class NavigationIconView {
   }
 }
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _MainState();
+  }
+}
+
+class _MainState extends State<MainPage> {
+  int _currentIndex = 0;
+
+  final PageController _pageController =
+      PageController(initialPage: 0, keepPage: true);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("CAC"),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: onPageChanged,
+        children: <Widget>[
+          HomePage(),
+          AssignmentPage(),
+          ShoppingCartPage(),
+          MinePage(),
+        ],
       ),
-      body: Column(
-        children: <Widget>[],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text(Strings.home),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment),
+            title: Text(Strings.assignment),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            title: Text(Strings.shoppingCart),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            title: Text(Strings.mine),
+          ),
+        ],
+        onTap: onTap,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(Icons.add),
+        label: Text("作业"),
         onPressed: () {},
       ),
     );
+  }
+
+  void onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+
+      _pageController.animateToPage(index,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    });
+  }
+
+  void onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }
