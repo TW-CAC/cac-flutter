@@ -13,16 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import 'package:flutter_cac/data/source/repository.dart';
+import 'package:mockito/mockito.dart';
 
-import 'package:flutter/material.dart';
-
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(),
-      ],
-    );
-  }
-}
+class MockRepository extends Mock implements Repository {}

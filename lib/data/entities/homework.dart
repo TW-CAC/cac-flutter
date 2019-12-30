@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
+class Homework {
+  String title;
+  String content;
+  String createTime;
 
-class LoginPage extends StatelessWidget {
+  Homework({this.title, this.content, this.createTime});
+
+  factory Homework.fromJson(Map<String, dynamic> json) {
+    return Homework(
+        title: json['title'],
+        content: json['content'],
+        createTime: json['create_time']);
+  }
+
+  Map<String, dynamic> toJson() =>
+      {'title': title, 'content': content, 'create_time': createTime};
+
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(),
-      ],
-    );
+  String toString() {
+    return toJson().toString();
   }
 }

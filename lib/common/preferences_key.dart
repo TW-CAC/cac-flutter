@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
-
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(),
-      ],
-    );
-  }
+class PreferencesKey {
+  static const keyHomework = "key_homework";
+  static const keyDarkMode = "key_dark_mode";
 }

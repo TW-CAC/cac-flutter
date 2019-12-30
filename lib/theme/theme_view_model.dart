@@ -15,14 +15,27 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cac/data/source/repository.dart';
 
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(),
-      ],
-    );
+class ThemeViewModel extends ChangeNotifier {
+  bool _isDarkMode = false;
+
+  bool get isDarkMode => _isDarkMode;
+
+  Repository _repository;
+
+  ThemeViewModel(Repository repository) {
+    _repository = repository;
+
+    _repository.isDarkMode().then((isDarkMode) {
+      _isDarkMode = isDarkMode;
+      print("theme mode is dark:$_isDarkMode");
+    });
+  }
+
+  void switchTheme() {
+    _repository.switchThemeMode();
+    _isDarkMode = !_isDarkMode;
+    notifyListeners();
   }
 }

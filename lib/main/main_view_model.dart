@@ -16,13 +16,4 @@
 
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(),
-      ],
-    );
-  }
-}
+class MainViewModel extends ChangeNotifier {}

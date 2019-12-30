@@ -1,77 +1,26 @@
+/*
+ * Copyright (c) 2020. komamj
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_cac/assignment/assignment_page.dart';
 import 'package:flutter_cac/cart/shopping_cart.dart';
+import 'package:flutter_cac/common/routes.dart';
 import 'package:flutter_cac/common/strings.dart';
 import 'package:flutter_cac/home/home_page.dart';
 import 'package:flutter_cac/mine/mine_page.dart';
-
-class NavigationIconView {
-  NavigationIconView({
-    Widget icon,
-    Widget activeIcon,
-    String title,
-    Color color,
-    TickerProvider vsync,
-  })  : _icon = icon,
-        _color = color,
-        _title = title,
-        item = BottomNavigationBarItem(
-          icon: icon,
-          activeIcon: activeIcon,
-          title: Text(title),
-          backgroundColor: color,
-        ),
-        controller = AnimationController(
-          duration: kThemeAnimationDuration,
-          vsync: vsync,
-        ) {
-    _animation = controller.drive(CurveTween(
-      curve: const Interval(0.5, 1.0, curve: Curves.fastOutSlowIn),
-    ));
-  }
-
-  final Widget _icon;
-  final Color _color;
-  final String _title;
-  final BottomNavigationBarItem item;
-  final AnimationController controller;
-  Animation<double> _animation;
-
-  FadeTransition transition(
-      BottomNavigationBarType type, BuildContext context) {
-    Color iconColor;
-    if (type == BottomNavigationBarType.shifting) {
-      iconColor = _color;
-    } else {
-      final ThemeData themeData = Theme.of(context);
-      iconColor = themeData.brightness == Brightness.light
-          ? themeData.primaryColor
-          : themeData.accentColor;
-    }
-
-    return FadeTransition(
-      opacity: _animation,
-      child: SlideTransition(
-        position: _animation.drive(
-          Tween<Offset>(
-            begin: const Offset(0.0, 0.02), // Slightly down.
-            end: Offset.zero,
-          ),
-        ),
-        child: IconTheme(
-          data: IconThemeData(
-            color: iconColor,
-            size: 120.0,
-          ),
-          child: Semantics(
-            label: 'Placeholder for $_title tab',
-            child: _icon,
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class MainPage extends StatefulWidget {
   @override
@@ -81,6 +30,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainState extends State<MainPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   int _currentIndex = 0;
 
   final PageController _pageController =
@@ -94,6 +45,7 @@ class _MainState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: PageView(
         controller: _pageController,
         onPageChanged: onPageChanged,
@@ -128,12 +80,22 @@ class _MainState extends State<MainPage> {
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.add),
-        label: Text("作业"),
-        onPressed: () {},
-      ),
+      floatingActionButton: buildFloatActionButton(),
     );
+  }
+
+  FloatingActionButton buildFloatActionButton() {
+    return FloatingActionButton.extended(
+      icon: Icon(Icons.add),
+      label: Text(Strings.homework),
+      onPressed: () {
+        showHomeworkPage();
+      },
+    );
+  }
+
+  void showHomeworkPage() {
+    Navigator.pushNamed(context, Routes.homework);
   }
 
   void onTap(int index) {

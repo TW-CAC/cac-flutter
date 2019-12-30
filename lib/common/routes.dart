@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
-
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(),
-      ],
-    );
-  }
+class Routes {
+  static const String splash = "/splash";
+  static const String login = "/login";
+  static const String main = "/main";
+  static const String mine = "/mine";
+  static const String assignment = "/assignment";
+  static const String cart = "/cart";
+  static const String homework = "/homework";
 }

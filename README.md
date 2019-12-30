@@ -1,6 +1,6 @@
 # flutter_cac
 
-A new Flutter application.
+A new Flutter application for China Agile Coach.
 
 ## Getting Started
 
