@@ -47,7 +47,10 @@ class LocalDataSourceImp extends LocalDataSource {
   Future<Homework> getDraftHomework() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String homework = sharedPreferences.getString(PreferencesKey.keyHomework);
-    return Homework.fromJson(jsonDecode(homework));
+    if (homework != null && homework.isNotEmpty) {
+      return Homework.fromJson(jsonDecode(homework));
+    }
+    return null;
   }
 
   @override

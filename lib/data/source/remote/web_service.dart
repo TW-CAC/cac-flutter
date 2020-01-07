@@ -23,5 +23,5 @@ abstract class WebService {
 
   postCourse();
 
-  postHomework(Homework homework);
+  Future<bool> postHomework(Homework homework);
 }

@@ -30,9 +30,13 @@ class _HomeworkState extends State<HomeworkPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _titleController = TextEditingController();
+  final _titleFocusNode = FocusNode();
   final _contentController = TextEditingController();
+  final _contentFocusNode = FocusNode();
 
   Homework _homework;
+
+  bool _isSaved = false;
 
   @override
   void initState() {
@@ -40,82 +44,91 @@ class _HomeworkState extends State<HomeworkPage> {
 
     debugPrint("_HomeworkState initState");
 
-    Provider.of<HomeworkViewModel>(context, listen: false)
-        .getDraftHomework()
-        .then((result) {
-      _homework = result;
-      debugPrint("_homework:${_homework.toString()}");
-      if (_homework != null) {
+    _init();
+  }
+
+  void _init() async {
+    _homework = await Provider.of<HomeworkViewModel>(context, listen: false)
+        .getDraftHomework();
+
+    debugPrint("_homework:${_homework.toString()}");
+    if (_homework != null) {
+      setState(() {
         _titleController.text = _homework.title;
         _contentController.text = _homework.content;
-      }
-    });
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text("发布作业"),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            tooltip: "保存至草稿",
-            icon: Icon(Icons.save),
-            onPressed: _saveHomeHomework,
-          ),
-          IconButton(
-            tooltip: "发布",
-            icon: Icon(Icons.send),
-            onPressed: _postHomework,
-          ),
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(bottom: 8),
-              child: Text("标题"),
+    return WillPopScope(
+      child: Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text("发布作业"),
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              tooltip: "保存至草稿",
+              icon: Icon(Icons.save),
+              onPressed: _saveHomeHomework,
             ),
-            TextField(
-              autofocus: false,
-              maxLength: 100,
-              maxLines: 1,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '请输入作业的标题',
-              ),
-              controller: _titleController,
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 8),
-              child: Text("内容"),
-            ),
-            Expanded(
-              child: Container(
-                child: TextField(
-                  autofocus: false,
-                  maxLength: 1000,
-                  maxLines: 50,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: '请输入作业的详细内容',
-                  ),
-                  controller: _contentController,
-                ),
-              ),
+            IconButton(
+              tooltip: "发布",
+              icon: Icon(Icons.send),
+              onPressed: _postHomework,
             ),
           ],
         ),
+        body: Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 8),
+                child: Text("标题"),
+              ),
+              TextField(
+                autofocus: false,
+                maxLength: 100,
+                maxLines: 1,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: '请输入作业的标题',
+                ),
+                controller: _titleController,
+                focusNode: _titleFocusNode,
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 8),
+                child: Text("内容"),
+              ),
+              Expanded(
+                child: Container(
+                  child: TextField(
+                    autofocus: false,
+                    maxLength: 1000,
+                    maxLines: 50,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: '请输入作业的详细内容',
+                    ),
+                    controller: _contentController,
+                    focusNode: _contentFocusNode,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
+      onWillPop: _onWillPop,
     );
   }
 
@@ -127,17 +140,60 @@ class _HomeworkState extends State<HomeworkPage> {
     super.dispose();
   }
 
+  Future<bool> _onWillPop() async {
+    _clearFocus();
+
+    if (_isSaved ||
+        (_titleController.text.isEmpty && _contentController.text.isEmpty)) {
+      return true;
+    }
+    bool result = await showDialog<bool>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("提示"),
+            content: Text("您还未保存作业，确定要退出当前页面吗？"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("取消"),
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              FlatButton(
+                child: Text("确定"),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              ),
+            ],
+          );
+        });
+
+    return result;
+  }
+
   void _postHomework() {
+    _clearFocus();
+
+    _showLoadingDialog();
+
     Provider.of<HomeworkViewModel>(context, listen: false)
         .postHomework(_titleController.text, _contentController.text)
         .then((result) {
+      _isSaved = true;
+
       _showSnackBar(result);
     }).catchError((error) {
       _showSnackBar(error.toString());
+    }).whenComplete(() {
+      Navigator.of(context).pop();
     });
   }
 
   void _saveHomeHomework() {
+    _clearFocus();
+
+    _isSaved = true;
+
     Provider.of<HomeworkViewModel>(context, listen: false)
         .saveHomework(_titleController.text, _contentController.text)
         .then((result) {
@@ -147,11 +203,44 @@ class _HomeworkState extends State<HomeworkPage> {
     });
   }
 
+  void _clearFocus() {
+    _titleFocusNode.unfocus();
+    _contentFocusNode.unfocus();
+  }
+
   void _showSnackBar(String content) {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
         content: Text(content),
+        duration: Duration(milliseconds: 1500),
       ),
+    );
+  }
+
+  Future<bool> _showLoadingDialog() {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return WillPopScope(
+          child: AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 26.0),
+                  child: Text("正在发布，请稍后..."),
+                )
+              ],
+            ),
+          ),
+          onWillPop: () async {
+            return Future.value(false);
+          },
+        );
+      },
     );
   }
 }

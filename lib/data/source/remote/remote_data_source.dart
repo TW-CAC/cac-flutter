@@ -42,7 +42,9 @@ class RemoteDataSource implements WebService {
   }
 
   @override
-  postHomework(Homework homework) {
-    return null;
+  Future<bool> postHomework(Homework homework) async {
+    return Future.delayed(Duration(milliseconds: 5000), () {
+      return true;
+    });
   }
 }

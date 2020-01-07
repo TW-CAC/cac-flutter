@@ -34,6 +34,8 @@ class _MainState extends State<MainPage> {
 
   int _currentIndex = 0;
 
+  DateTime _lastPressed;
+
   final PageController _pageController =
       PageController(initialPage: 0, keepPage: true);
 
@@ -44,61 +46,84 @@ class _MainState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: onPageChanged,
-        children: <Widget>[
-          HomePage(),
-          AssignmentPage(),
-          ShoppingCartPage(),
-          MinePage(),
-        ],
+    return WillPopScope(
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: _onPageChanged,
+          children: <Widget>[
+            HomePage(),
+            AssignmentPage(),
+            ShoppingCartPage(),
+            MinePage(),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text(Strings.home),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.assignment),
+              title: Text(Strings.assignment),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart),
+              title: Text(Strings.shoppingCart),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              title: Text(Strings.mine),
+            ),
+          ],
+          onTap: _onTap,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+        ),
+        floatingActionButton: _buildFloatActionButton(),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text(Strings.home),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.assignment),
-            title: Text(Strings.assignment),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            title: Text(Strings.shoppingCart),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text(Strings.mine),
-          ),
-        ],
-        onTap: onTap,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-      ),
-      floatingActionButton: buildFloatActionButton(),
+      onWillPop: _onWillPop,
     );
   }
 
-  FloatingActionButton buildFloatActionButton() {
+  FloatingActionButton _buildFloatActionButton() {
     return FloatingActionButton.extended(
       icon: Icon(Icons.add),
       label: Text(Strings.homework),
       onPressed: () {
-        showHomeworkPage();
+        _showHomeworkPage();
       },
     );
   }
 
-  void showHomeworkPage() {
+  Future<bool> _onWillPop() async {
+    if (_lastPressed == null ||
+        DateTime.now().difference(_lastPressed) >
+            Duration(milliseconds: 1500)) {
+      _lastPressed = DateTime.now();
+      _showSnackBar();
+      return false;
+    }
+    return true;
+  }
+
+  void _showSnackBar() {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text("请再按一次确认退出应用。"),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  void _showHomeworkPage() {
     Navigator.pushNamed(context, Routes.homework);
   }
 
-  void onTap(int index) {
+  void _onTap(int index) {
     setState(() {
       _currentIndex = index;
 
@@ -107,7 +132,7 @@ class _MainState extends State<MainPage> {
     });
   }
 
-  void onPageChanged(int index) {
+  void _onPageChanged(int index) {
     setState(() {
       _currentIndex = index;
     });

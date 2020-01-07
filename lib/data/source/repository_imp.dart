@@ -51,6 +51,7 @@ class RepositoryImp extends Repository {
 
   @override
   Future<bool> postHomework(Homework homework) {
+    _localDataSource.clearHomework();
     return _remoteDataSource.postHomework(homework);
   }
 
