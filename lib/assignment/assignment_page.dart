@@ -15,7 +15,9 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cac/assignment/assignment_view_model.dart';
 import 'package:flutter_cac/common/strings.dart';
+import 'package:provider/provider.dart';
 
 class AssignmentPage extends StatelessWidget {
   @override
@@ -25,6 +27,17 @@ class AssignmentPage extends StatelessWidget {
         centerTitle: true,
         title: Text(Strings.assignment),
       ),
+      body: ChangeNotifierProvider(
+        create: (_) => AssignmentViewModel(),
+        child: Assignment(),
+      ),
     );
+  }
+}
+
+class Assignment extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

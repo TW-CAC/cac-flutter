@@ -17,14 +17,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cac/data/entities/homework.dart';
 import 'package:flutter_cac/data/source/repository.dart';
+import 'package:flutter_cac/data/source/repository_imp.dart';
 
 class HomeworkViewModel extends ChangeNotifier {
   static const String _errorMessage = "标题和内容不能为空";
 
   Repository _repository;
 
-  HomeworkViewModel(Repository repository) {
-    _repository = repository;
+  HomeworkViewModel([Repository repository]) {
+    if (repository == null) {
+      _repository = RepositoryImp.singleton;
+    } else {
+      _repository = repository;
+    }
   }
 
   Future<String> saveHomework(String title, String content) async {

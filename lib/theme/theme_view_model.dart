@@ -16,6 +16,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cac/data/source/repository.dart';
+import 'package:flutter_cac/data/source/repository_imp.dart';
 
 class ThemeViewModel extends ChangeNotifier {
   bool _isDarkMode = false;
@@ -24,8 +25,12 @@ class ThemeViewModel extends ChangeNotifier {
 
   Repository _repository;
 
-  ThemeViewModel(Repository repository) {
-    _repository = repository;
+  ThemeViewModel([Repository repository]) {
+    if (repository == null) {
+      _repository = RepositoryImp.singleton;
+    } else {
+      _repository = repository;
+    }
 
     _repository.isDarkMode().then((isDarkMode) {
       _isDarkMode = isDarkMode;

@@ -16,19 +16,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cac/data/source/repository.dart';
+import 'package:flutter_cac/data/source/repository_imp.dart';
 
 class LoginViewModel extends ChangeNotifier {
   Repository _repository;
 
-  LoginViewModel(Repository repository) {
-    _repository = repository;
+  LoginViewModel([Repository repository]) {
+    if (repository == null) {
+      _repository = RepositoryImp.singleton;
+    } else {
+      _repository = repository;
+    }
   }
 
   bool _isLogin = false;
 
   bool get isLogin => _isLogin;
 
-  void loginByWeChat() {
-
-  }
+  void loginByWeChat() {}
 }
