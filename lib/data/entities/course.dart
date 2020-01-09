@@ -14,4 +14,11 @@
  * limitations under the License.
  */
 
-class Course {}
+class Course {
+  String id;
+  String title;
+  String content;
+  String createTime;
+
+  Course({this.id, this.title, this.content, this.createTime});
+}
