@@ -26,4 +26,8 @@ abstract class LocalDataSource {
   Future<bool> isDarkMode();
 
   Future<bool> switchThemeMode();
+
+  Future<bool> isLogin();
+
+  Future<bool> logout();
 }

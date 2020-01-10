@@ -16,13 +16,121 @@
 
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _userNameFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _userNameController.dispose();
+    _passwordController.dispose();
+    _userNameFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("登录"),
+      ),
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image(
+              width: 75.0,
+              height: 75.0,
+              image: AssetImage("images/ic_avatar.png"),
+            ),
+            TextFormField(
+              maxLines: 1,
+              autofocus: false,
+              autovalidate: true,
+              focusNode: _userNameFocusNode,
+              cursorColor: Theme.of(context).accentColor,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: "请输入您的账号",
+                labelText: "账号",
+              ),
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
+              validator: _userNameValidator,
+              controller: _userNameController,
+            ),
+            TextFormField(
+              autofocus: false,
+              maxLines: 1,
+              focusNode: _passwordFocusNode,
+              autovalidate: true,
+              controller: _passwordController,
+              cursorColor: Theme.of(context).accentColor,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.lock),
+                hintText: "请输入您的密码",
+                labelText: "密码",
+              ),
+              obscureText: true,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              validator: _passwordValidator,
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: RaisedButton(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      color: Theme.of(context).accentColor,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      child: Text(
+                        "登录",
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 24),
+                      ),
+                      onPressed: _onLoginPressed,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  void _onLoginPressed() {}
+
+  String _passwordValidator(String v) {
+    return v.trim().length > 5 || !_passwordFocusNode.hasFocus
+        ? null
+        : "密码不能少于6位";
+  }
+
+  String _userNameValidator(String v) {
+    return v.trim().length > 0 || !_userNameFocusNode.hasFocus
+        ? null
+        : "用户名不能为空";
   }
 }

@@ -69,4 +69,21 @@ class RepositoryImp extends Repository {
   Future<bool> switchThemeMode() {
     return _localDataSource.switchThemeMode();
   }
+
+  @override
+  Future<bool> isLogin() {
+    return _localDataSource.isLogin();
+  }
+
+  @override
+  Future login(String number) {
+    // TODO: implement login
+    return null;
+  }
+
+  @override
+  Future<bool> logout() {
+    // TODO: implement logout
+    return null;
+  }
 }

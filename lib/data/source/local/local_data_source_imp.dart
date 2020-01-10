@@ -65,4 +65,17 @@ class LocalDataSourceImp extends LocalDataSource {
     bool isDarkMode = await LocalDataSourceImp.singleton.isDarkMode();
     return sharedPreferences.setBool(PreferencesKey.keyDarkMode, !isDarkMode);
   }
+
+  @override
+  Future<bool> isLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    bool isLogin = await LocalDataSourceImp.singleton.isLogin();
+    return isLogin;
+  }
+
+  @override
+  Future<bool> logout() {
+    return null;
+  }
 }

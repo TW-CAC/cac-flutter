@@ -13,28 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import 'package:flutter/material.dart';
 
-import 'package:flutter_cac/data/entities/course.dart';
-import 'package:flutter_cac/data/entities/homework.dart';
+class LoginButton extends StatefulWidget {
+  const LoginButton({@required VoidCallback onPressed});
 
-abstract class Repository {
-  Future<List<Course>> getRemotePopularCourses();
+  @override
+  _LoginButtonState createState() => _LoginButtonState();
+}
 
-  Future<List<Homework>> getRemoteHomework();
-
-  Future<bool> postHomework(Homework homework);
-
-  Future<Homework> getDraftHomework();
-
-  Future<bool> saveHomework(Homework homework);
-
-  Future<bool> isDarkMode();
-
-  Future<bool> switchThemeMode();
-
-  Future login(String number);
-
-  Future<bool> isLogin();
-
-  Future<bool> logout();
+class _LoginButtonState extends State<LoginButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: RaisedButton(
+        child: Text("登录"),
+        onPressed: null,
+      ),
+    );
+  }
 }
