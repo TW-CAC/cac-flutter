@@ -15,21 +15,34 @@
  */
 import 'package:flutter/material.dart';
 
-class LoginButton extends StatefulWidget {
-  const LoginButton({@required VoidCallback onPressed});
+class LoginButton extends StatelessWidget {
+  final VoidCallback onPressed;
 
-  @override
-  _LoginButtonState createState() => _LoginButtonState();
-}
+  const LoginButton({Key key, @required this.onPressed}) : super(key: key);
 
-class _LoginButtonState extends State<LoginButton> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: RaisedButton(
-        child: Text("登录"),
-        onPressed: null,
-      ),
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: RaisedButton(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              color: Theme.of(context).accentColor,
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              child: Text(
+                "登录",
+                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 24),
+              ),
+              onPressed: onPressed,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

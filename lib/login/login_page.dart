@@ -15,6 +15,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cac/login/login_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -91,28 +92,8 @@ class _LoginPageState extends State<LoginPage> {
               textInputAction: TextInputAction.done,
               validator: _passwordValidator,
             ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: RaisedButton(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      color: Theme.of(context).accentColor,
-                      textColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      child: Text(
-                        "登录",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 24),
-                      ),
-                      onPressed: _onLoginPressed,
-                    ),
-                  ),
-                ),
-              ],
+            LoginButton(
+              onPressed: _onLoginPressed,
             ),
           ],
         ),
