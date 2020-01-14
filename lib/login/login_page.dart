@@ -23,8 +23,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final _userNameFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
+
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -45,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("登录"),
       ),
@@ -101,7 +105,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _onLoginPressed() {}
+  void _onLoginPressed() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text("登录成功"),
+      duration: Duration(milliseconds: 1000),
+    ));
+
+    Future.delayed(
+      Duration(milliseconds: 1000),
+    ).whenComplete(() {
+      Navigator.of(context).pop();
+    });
+  }
 
   String _passwordValidator(String v) {
     return v.trim().length > 5 || !_passwordFocusNode.hasFocus
