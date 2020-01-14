@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
+import 'package:flutter_cac/common/view_model.dart';
+import 'package:flutter_cac/data/entities/course.dart';
 import 'package:flutter_cac/data/source/repository.dart';
 
-class HomeViewModel extends ChangeNotifier {
-  Repository _repository;
+class HomeViewModel extends ViewModel {
+  List<Course> courses;
 
-  HomeViewModel(Repository repository) {
-    _repository = repository;
+  HomeViewModel([Repository repository]) : super(repository);
+
+  void refresh() async {
+    await Future.delayed(Duration(milliseconds: 3));
   }
+
+  void subscribe(Course course, String userId) async {}
 }

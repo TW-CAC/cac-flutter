@@ -15,9 +15,20 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cac/common/routes.dart';
 import 'package:flutter_cac/common/strings.dart';
+import 'package:flutter_cac/data/entities/course.dart';
+import 'package:flutter_cac/login/login_view_model.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+import 'course_item.dart';
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +36,49 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         title: Text(Strings.home),
       ),
+      body: RefreshIndicator(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: 100,
+          itemBuilder: (BuildContext context, int position) {
+            if (position % 2 == 0) {
+              return CourseItem(
+                onPressed: _onPressed,
+                course: Course(
+                    title: "Oppo管理特种兵第二期",
+                    creatorName: "宇宙",
+                    subscribeCount: 20),
+              );
+            } else {
+              return CourseItem(
+                onPressed: _onPressed,
+                course: Course(
+                    title: "Oppo技术特种兵第一期",
+                    creatorName: "覃老板",
+                    subscribeCount: 19),
+              );
+            }
+          },
+        ),
+        onRefresh: _onRefresh,
+      ),
     );
+  }
+
+  Future<Null> _onRefresh() async {
+    await Future.delayed(
+      Duration(milliseconds: 1500),
+    );
+    return null;
+  }
+
+  void _onPressed() {
+    LoginViewModel viewModel =
+        Provider.of<LoginViewModel>(context, listen: false);
+    if (viewModel.isLogin) {
+      // todo subscribe course
+    } else {
+      Navigator.pushNamed(context, Routes.login);
+    }
   }
 }

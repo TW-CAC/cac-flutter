@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
+import 'package:flutter_cac/common/view_model.dart';
 import 'package:flutter_cac/data/source/repository.dart';
-import 'package:flutter_cac/data/source/repository_imp.dart';
 
-class LoginViewModel extends ChangeNotifier {
-  Repository _repository;
-
+class LoginViewModel extends ViewModel {
   bool _isLogin = false;
 
   bool get isLogin => _isLogin;
 
-  LoginViewModel([Repository repository]) {
-    if (repository == null) {
-      _repository = RepositoryImp.singleton;
-    } else {
-      _repository = repository;
-    }
-  }
+  LoginViewModel([Repository repository]) : super(repository);
 
   void loginByWeChat() {}
 }

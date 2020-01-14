@@ -14,21 +14,3 @@
  * limitations under the License.
  */
 
-class Course {
-  String id;
-  String title;
-  String content;
-  String createTime;
-  String creatorId;
-  String creatorName;
-  int subscribeCount;
-
-  Course(
-      {this.id,
-      this.title,
-      this.content,
-      this.createTime,
-      this.creatorId,
-      this.creatorName,
-      this.subscribeCount});
-}

@@ -15,35 +15,27 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cac/common/view_model.dart';
 import 'package:flutter_cac/data/entities/homework.dart';
 import 'package:flutter_cac/data/source/repository.dart';
-import 'package:flutter_cac/data/source/repository_imp.dart';
 
-class HomeworkViewModel extends ChangeNotifier {
+class HomeworkViewModel extends ViewModel {
   static const String _errorMessage = "标题和内容不能为空";
 
-  Repository _repository;
-
-  HomeworkViewModel([Repository repository]) {
-    if (repository == null) {
-      _repository = RepositoryImp.singleton;
-    } else {
-      _repository = repository;
-    }
-  }
+  HomeworkViewModel([Repository repository]) : super(repository);
 
   Future<String> saveHomework(String title, String content) async {
     String resultMessage = _errorMessage;
     if (_isValid(title, content)) {
       Homework homework = _buildHomework(title, content);
-      bool result = await _repository.saveHomework(homework);
+      bool result = await repository.saveHomework(homework);
       resultMessage = result ? "保存成功。" : "保存失败，请稍候重试。";
     }
     return resultMessage;
   }
 
   Future<Homework> getDraftHomework() async {
-    Homework homework = await _repository.getDraftHomework();
+    Homework homework = await repository.getDraftHomework();
     return homework;
   }
 
@@ -55,7 +47,7 @@ class HomeworkViewModel extends ChangeNotifier {
     String resultMessage = _errorMessage;
     if (_isValid(title, content)) {
       Homework homework = _buildHomework(title, content);
-      bool result = await _repository.postHomework(homework);
+      bool result = await repository.postHomework(homework);
       resultMessage = result ? "发布成功。" : "发布失败，请稍候重试。";
     }
     return resultMessage;

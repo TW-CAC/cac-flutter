@@ -14,32 +14,23 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
+import 'package:flutter_cac/common/view_model.dart';
 import 'package:flutter_cac/data/source/repository.dart';
-import 'package:flutter_cac/data/source/repository_imp.dart';
 
-class ThemeViewModel extends ChangeNotifier {
+class ThemeViewModel extends ViewModel {
   bool _isDarkMode = false;
 
   bool get isDarkMode => _isDarkMode;
 
-  Repository _repository;
-
-  ThemeViewModel([Repository repository]) {
-    if (repository == null) {
-      _repository = RepositoryImp.singleton;
-    } else {
-      _repository = repository;
-    }
-
-    _repository.isDarkMode().then((isDarkMode) {
+  ThemeViewModel([Repository repository]) : super(repository) {
+    this.repository.isDarkMode().then((isDarkMode) {
       _isDarkMode = isDarkMode;
       print("theme mode is dark:$_isDarkMode");
     });
   }
 
   void switchTheme() {
-    _repository.switchThemeMode();
+    repository.switchThemeMode();
     _isDarkMode = !_isDarkMode;
     notifyListeners();
   }

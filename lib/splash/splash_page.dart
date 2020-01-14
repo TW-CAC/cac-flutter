@@ -76,7 +76,7 @@ class _SplashState extends State<SplashPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 32, right: 16),
+              padding: EdgeInsets.only(top: 64, right: 16),
               child: RaisedButton(
                 color: Colors.pink,
                 textColor: Colors.white,

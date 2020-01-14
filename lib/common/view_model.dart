@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import 'package:flutter/foundation.dart';
+import 'package:flutter_cac/data/source/repository.dart';
+import 'package:flutter_cac/data/source/repository_imp.dart';
 
-class Course {
-  String id;
-  String title;
-  String content;
-  String createTime;
-  String creatorId;
-  String creatorName;
-  int subscribeCount;
+abstract class ViewModel extends ChangeNotifier {
+  Repository repository;
 
-  Course(
-      {this.id,
-      this.title,
-      this.content,
-      this.createTime,
-      this.creatorId,
-      this.creatorName,
-      this.subscribeCount});
+  ViewModel([Repository repository]) {
+    if (repository == null) {
+      this.repository = RepositoryImp.singleton;
+    } else {
+      this.repository = repository;
+    }
+  }
 }
