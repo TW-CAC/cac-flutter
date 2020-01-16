@@ -27,6 +27,12 @@ class RemoteDataSource implements WebService {
   RemoteDataSource.internal();
 
   @override
+  getCourses() {
+    // TODO: implement getCourses
+    return null;
+  }
+
+  @override
   getPopularCourses() {
     return null;
   }

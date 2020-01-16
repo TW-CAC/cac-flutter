@@ -17,6 +17,8 @@
 import 'package:flutter_cac/data/entities/homework.dart';
 
 abstract class WebService {
+  getCourses();
+
   getPopularCourses();
 
   getTopRatedCourses();

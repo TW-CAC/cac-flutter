@@ -19,75 +19,90 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_cac/data/entities/course.dart';
 
 class CourseItem extends StatelessWidget {
+  final GestureTapCallback onTap;
   final VoidCallback onPressed;
 
   final Course course;
 
-  const CourseItem({Key key, @required this.onPressed, @required this.course})
+  const CourseItem(
+      {Key key,
+      @required this.onTap,
+      @required this.onPressed,
+      @required this.course})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-      elevation: 4,
-      child: Stack(
-        alignment: Alignment.topRight,
-        fit: StackFit.loose,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                height: 180,
-                color: Colors.deepOrange,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                child: Text(
-                  course.title,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.title,
+    return InkWell(
+      radius: 4,
+      borderRadius: BorderRadius.all(
+        Radius.circular(4),
+      ),
+      onTap: onTap,
+      child: Card(
+        margin: EdgeInsets.only(left: 4, right: 4, top: 4, bottom: 4),
+        elevation: 4,
+        child: Stack(
+          alignment: Alignment.topRight,
+          fit: StackFit.loose,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 180,
+                  color: Colors.deepOrange,
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                child: Text(
-                  course.title,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.subhead,
-                ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 8, bottom: 8),
-                      child: Text(course.creatorName),
-                    ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  child: Text(
+                    course.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.title,
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 8, bottom: 8),
-                      child: Text(
-                        "${course.subscribeCount}人已订阅",
-                        textAlign: TextAlign.end,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  child: Text(
+                    course.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.subhead,
+                  ),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 8, bottom: 8),
+                        child: Text(course.creatorName),
                       ),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 8, bottom: 8),
+                        child: Text(
+                          "${course.subscribeCount}人已订阅",
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 8),
+              child: OutlineButton.icon(
+                onPressed: onPressed,
+                icon: Icon(Icons.bookmark_border),
+                label: Text("订阅"),
               ),
-            ],
-          ),
-          IconButton(
-            icon: Icon(Icons.bookmark_border),
-            tooltip: "订阅",
-            onPressed: onPressed,
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

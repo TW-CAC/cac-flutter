@@ -35,8 +35,8 @@ class RepositoryImp extends Repository {
   RepositoryImp.internal();
 
   @override
-  Future<List<Course>> getRemotePopularCourses() {
-    return null;
+  Future<List<Course>> getCourses() {
+    return _remoteDataSource.getCourses();
   }
 
   @override

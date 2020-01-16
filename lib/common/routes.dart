@@ -18,6 +18,7 @@ class Routes {
   static const String splash = "/splash";
   static const String login = "/login";
   static const String main = "/main";
+  static const String classDetail = "/class";
   static const String mine = "/mine";
   static const String assignment = "/assignment";
   static const String cart = "/cart";

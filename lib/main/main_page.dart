@@ -136,7 +136,7 @@ class _MainState extends State<MainPage> {
       _currentIndex = index;
 
       _pageController.animateToPage(index,
-          duration: Duration(milliseconds: 500), curve: Curves.ease);
+          duration: Duration(milliseconds: 200), curve: Curves.ease);
     });
   }
 

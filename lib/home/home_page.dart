@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (BuildContext context, int position) {
             if (position % 2 == 0) {
               return CourseItem(
+                onTap: _onTap,
                 onPressed: _onPressed,
                 course: Course(
                     title: "Oppo管理特种兵第二期",
@@ -51,6 +52,7 @@ class _HomePageState extends State<HomePage> {
               );
             } else {
               return CourseItem(
+                onTap: _onTap,
                 onPressed: _onPressed,
                 course: Course(
                     title: "Oppo技术特种兵第一期",
@@ -80,5 +82,9 @@ class _HomePageState extends State<HomePage> {
     } else {
       Navigator.pushNamed(context, Routes.login);
     }
+  }
+
+  void _onTap() {
+    Navigator.pushNamed(context, Routes.classDetail);
   }
 }

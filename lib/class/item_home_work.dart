@@ -14,27 +14,11 @@
  * limitations under the License.
  */
 
-import 'package:flutter_cac/data/entities/course.dart';
-import 'package:flutter_cac/data/entities/homework.dart';
+import 'package:flutter/material.dart';
 
-abstract class Repository {
-  Future<List<Course>> getCourses();
-
-  Future<List<Homework>> getRemoteHomework();
-
-  Future<bool> postHomework(Homework homework);
-
-  Future<Homework> getDraftHomework();
-
-  Future<bool> saveHomework(Homework homework);
-
-  Future<bool> isDarkMode();
-
-  Future<bool> switchThemeMode();
-
-  Future login(String number);
-
-  Future<bool> isLogin();
-
-  Future<bool> logout();
+class ItemHomework extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }
