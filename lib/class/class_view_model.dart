@@ -17,5 +17,5 @@ import 'package:flutter_cac/common/view_model.dart';
 import 'package:flutter_cac/data/source/repository.dart';
 
 class ClassViewModel extends ViewModel {
-  ClassViewModel([Repository repository]) : super(repository);
+  ClassViewModel(Repository repository) : super(repository: repository);
 }

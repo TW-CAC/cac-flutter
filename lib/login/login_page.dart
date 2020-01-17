@@ -15,7 +15,12 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cac/data/entities/user.dart';
 import 'package:flutter_cac/login/login_button.dart';
+import 'package:flutter_cac/widget/loading.dart';
+import 'package:provider/provider.dart';
+
+import 'login_view_model.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -34,6 +39,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
+    LoginViewModel viewModel =
+        Provider.of<LoginViewModel>(context, listen: false);
+
+    _userNameController.addListener(() {
+      viewModel.checkUserName(_userNameController.text);
+    });
+    _passwordController.addListener(() {
+      viewModel.checkPassword(_passwordController.text);
+    });
   }
 
   @override
@@ -96,8 +111,12 @@ class _LoginPageState extends State<LoginPage> {
               textInputAction: TextInputAction.done,
               validator: _passwordValidator,
             ),
-            LoginButton(
-              onPressed: _onLoginPressed,
+            Consumer<LoginViewModel>(
+              builder: (context, viewModel, child) {
+                return LoginButton(
+                  onPressed: viewModel.isValid ? _onLoginPressed : null,
+                );
+              },
             ),
           ],
         ),
@@ -105,17 +124,41 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _onLoginPressed() {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text("登录成功"),
-      duration: Duration(milliseconds: 1000),
-    ));
+  void _onLoginPressed() async {
+    // 清除焦点
+    _userNameFocusNode.unfocus();
+    _passwordFocusNode.unfocus();
+    // 显示loading ui
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      child: Loading(
+        content: "登录中，请稍候...",
+      ),
+    );
 
-    Future.delayed(
-      Duration(milliseconds: 1000),
-    ).whenComplete(() {
-      Navigator.of(context).pop();
-    });
+    LoginViewModel viewModel =
+        Provider.of<LoginViewModel>(context, listen: false);
+    User result = await viewModel.login(
+        _userNameController.text, _passwordController.text);
+    Navigator.of(context).pop();
+    if (result != null) {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("登录成功"),
+        duration: Duration(milliseconds: 1000),
+      ));
+
+      Future.delayed(
+        Duration(milliseconds: 1000),
+      ).whenComplete(() {
+        Navigator.of(context).pop();
+      });
+    } else {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("登录失败,请稍候重试。"),
+        duration: Duration(milliseconds: 1000),
+      ));
+    }
   }
 
   String _passwordValidator(String v) {

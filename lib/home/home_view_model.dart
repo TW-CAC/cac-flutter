@@ -19,13 +19,27 @@ import 'package:flutter_cac/data/entities/course.dart';
 import 'package:flutter_cac/data/source/repository.dart';
 
 class HomeViewModel extends ViewModel {
-  List<Course> courses;
+  var _courses = List<Course>();
 
-  HomeViewModel([Repository repository]) : super(repository);
+  List<Course> get courses => _courses;
 
-  void refresh() async {
-    await Future.delayed(Duration(milliseconds: 3));
+  bool _isSubscribed = false;
+
+  bool get isSubscribed => _isSubscribed;
+
+  HomeViewModel(Repository repository) : super(repository: repository);
+
+  Future<Null> refresh() async {
+    var result = await repository.getCourses();
+    _courses.clear();
+    _courses.addAll(result);
+    notifyListeners();
+    return null;
   }
 
-  void subscribe(Course course, String userId) async {}
+  void subscribe(Course course) {
+    course.isSubscribed = true;
+    notifyListeners();
+    // todo 订阅课程
+  }
 }

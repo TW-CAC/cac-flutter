@@ -76,8 +76,8 @@ class _SplashState extends State<SplashPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 64, right: 16),
-              child: RaisedButton(
+              padding: EdgeInsets.only(top: 32, right: 16),
+              child: OutlineButton(
                 color: Colors.pink,
                 textColor: Colors.white,
                 child: _buildChildText(),
@@ -96,7 +96,7 @@ class _SplashState extends State<SplashPage> {
   Text _buildChildText() {
     String text = "跳过";
     if (_countdownTime > 0) {
-      text = "$text$_countdownTime";
+      text = "$text  $_countdownTime";
     }
     return Text(text);
   }

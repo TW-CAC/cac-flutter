@@ -22,7 +22,7 @@ class ThemeViewModel extends ViewModel {
 
   bool get isDarkMode => _isDarkMode;
 
-  ThemeViewModel([Repository repository]) : super(repository) {
+  ThemeViewModel(Repository repository) : super(repository: repository) {
     this.repository.isDarkMode().then((isDarkMode) {
       _isDarkMode = isDarkMode;
       print("theme mode is dark:$_isDarkMode");

@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cac/common/routes.dart';
 import 'package:flutter_cac/common/strings.dart';
 import 'package:flutter_cac/data/entities/course.dart';
+import 'package:flutter_cac/home/home_view_model.dart';
 import 'package:flutter_cac/login/login_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    super.initState();
+
+    _onRefresh();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -37,29 +45,22 @@ class _HomePageState extends State<HomePage> {
         title: Text(Strings.home),
       ),
       body: RefreshIndicator(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: 100,
-          itemBuilder: (BuildContext context, int position) {
-            if (position % 2 == 0) {
-              return CourseItem(
-                onTap: _onTap,
-                onPressed: _onPressed,
-                course: Course(
-                    title: "Oppo管理特种兵第二期",
-                    creatorName: "宇宙",
-                    subscribeCount: 20),
-              );
-            } else {
-              return CourseItem(
-                onTap: _onTap,
-                onPressed: _onPressed,
-                course: Course(
-                    title: "Oppo技术特种兵第一期",
-                    creatorName: "覃老板",
-                    subscribeCount: 19),
-              );
-            }
+        child: Consumer<HomeViewModel>(
+          builder: (context, viewModel, child) {
+            return ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: viewModel.courses.length,
+              itemBuilder: (BuildContext context, int position) {
+                final course = viewModel.courses[position];
+                return CourseItem(
+                  onTap: _onTap,
+                  onPressed: () {
+                    _onPressed(course);
+                  },
+                  course: course,
+                );
+              },
+            );
           },
         ),
         onRefresh: _onRefresh,
@@ -68,17 +69,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<Null> _onRefresh() async {
-    await Future.delayed(
-      Duration(milliseconds: 1500),
-    );
-    return null;
+    HomeViewModel viewModel =
+        Provider.of<HomeViewModel>(context, listen: false);
+    return viewModel.refresh();
   }
 
-  void _onPressed() {
+  void _onPressed(Course course) {
     LoginViewModel viewModel =
         Provider.of<LoginViewModel>(context, listen: false);
     if (viewModel.isLogin) {
-      // todo subscribe course
+      HomeViewModel viewModel =
+          Provider.of<HomeViewModel>(context, listen: false);
+      viewModel.subscribe(course);
     } else {
       Navigator.pushNamed(context, Routes.login);
     }

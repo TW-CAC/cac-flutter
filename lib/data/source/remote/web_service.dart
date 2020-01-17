@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import 'package:flutter_cac/data/entities/course.dart';
 import 'package:flutter_cac/data/entities/homework.dart';
+import 'package:flutter_cac/data/entities/user.dart';
 
 abstract class WebService {
-  getCourses();
+  Future<List<Course>> getCourses();
 
   getPopularCourses();
 
@@ -26,4 +28,8 @@ abstract class WebService {
   postCourse();
 
   Future<bool> postHomework(Homework homework);
+
+  Future<User> login(String userName, String password);
+
+  Future<User> register(String userName, String password);
 }

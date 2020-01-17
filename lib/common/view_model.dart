@@ -15,16 +15,9 @@
  */
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cac/data/source/repository.dart';
-import 'package:flutter_cac/data/source/repository_imp.dart';
 
 abstract class ViewModel extends ChangeNotifier {
-  Repository repository;
+  final Repository repository;
 
-  ViewModel([Repository repository]) {
-    if (repository == null) {
-      this.repository = RepositoryImp.singleton;
-    } else {
-      this.repository = repository;
-    }
-  }
+  ViewModel({@required this.repository});
 }

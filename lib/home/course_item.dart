@@ -17,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_cac/data/entities/course.dart';
+import 'package:flutter_cac/home/subscribe_outline_button.dart';
 
 class CourseItem extends StatelessWidget {
   final GestureTapCallback onTap;
@@ -40,7 +41,7 @@ class CourseItem extends StatelessWidget {
       ),
       onTap: onTap,
       child: Card(
-        margin: EdgeInsets.only(left: 4, right: 4, top: 4, bottom: 4),
+        margin: EdgeInsets.only(left: 4, right: 4, top: 8, bottom: 8),
         elevation: 4,
         child: Stack(
           alignment: Alignment.topRight,
@@ -84,7 +85,7 @@ class CourseItem extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.only(right: 8, bottom: 8),
                         child: Text(
-                          "${course.subscribeCount}人已订阅",
+                          "${course.subscribeIds.length}人已订阅",
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -93,13 +94,9 @@ class CourseItem extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 8),
-              child: OutlineButton.icon(
-                onPressed: onPressed,
-                icon: Icon(Icons.bookmark_border),
-                label: Text("订阅"),
-              ),
+            SubscribeOutlineButton(
+              course: course,
+              onPressed: onPressed,
             ),
           ],
         ),

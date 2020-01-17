@@ -15,6 +15,7 @@
  */
 
 import 'package:flutter_cac/data/entities/homework.dart';
+import 'package:flutter_cac/data/entities/user.dart';
 
 abstract class LocalDataSource {
   Future<bool> saveHomework(Homework homework);
@@ -26,6 +27,8 @@ abstract class LocalDataSource {
   Future<bool> isDarkMode();
 
   Future<bool> switchThemeMode();
+
+  Future<User> getLoginUser();
 
   Future<bool> isLogin();
 

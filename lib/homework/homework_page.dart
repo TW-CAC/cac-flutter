@@ -17,6 +17,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cac/data/entities/homework.dart';
 import 'package:flutter_cac/homework/homework_view_model.dart';
+import 'package:flutter_cac/widget/loading.dart';
 import 'package:provider/provider.dart';
 
 class HomeworkPage extends StatefulWidget {
@@ -217,30 +218,11 @@ class _HomeworkState extends State<HomeworkPage> {
     );
   }
 
-  Future<bool> _showLoadingDialog() {
-    return showDialog<bool>(
+  void _showLoadingDialog() {
+    showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) {
-        return WillPopScope(
-          child: AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircularProgressIndicator(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 26.0),
-                  child: Text("正在发布，请稍后..."),
-                )
-              ],
-            ),
-          ),
-          onWillPop: () async {
-            return Future.value(false);
-          },
-        );
-      },
+      child: Loading(content: "正在发布，请稍候..."),
     );
   }
 }

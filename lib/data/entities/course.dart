@@ -17,18 +17,22 @@
 class Course {
   String id;
   String title;
-  String content;
+  String description;
   String createTime;
   String creatorId;
   String creatorName;
-  int subscribeCount;
+  List<String> subscribeIds;
+  List<String> questions;
+
+  bool isSubscribed = false;
 
   Course(
       {this.id,
       this.title,
-      this.content,
+      this.description,
       this.createTime,
       this.creatorId,
       this.creatorName,
-      this.subscribeCount});
+      this.subscribeIds,
+      this.questions});
 }

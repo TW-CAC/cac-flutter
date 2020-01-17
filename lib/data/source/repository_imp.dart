@@ -16,6 +16,7 @@
 
 import 'package:flutter_cac/data/entities/course.dart';
 import 'package:flutter_cac/data/entities/homework.dart';
+import 'package:flutter_cac/data/entities/user.dart';
 import 'package:flutter_cac/data/source/local/local_data_source_imp.dart';
 import 'package:flutter_cac/data/source/remote/remote_data_source.dart';
 import 'package:flutter_cac/data/source/repository.dart';
@@ -76,14 +77,21 @@ class RepositoryImp extends Repository {
   }
 
   @override
-  Future login(String number) {
-    // TODO: implement login
-    return null;
+  Future<User> login(String userName, String password) {
+    return _remoteDataSource.login(userName, password);
   }
 
   @override
   Future<bool> logout() {
-    // TODO: implement logout
+    return null;
+  }
+
+  @override
+  Future<User> getLoginUser() async {
+    bool _isLogin = await isLogin();
+    if (_isLogin) {
+      return _localDataSource.getLoginUser();
+    }
     return null;
   }
 }

@@ -16,6 +16,7 @@
 
 import 'package:flutter_cac/data/entities/course.dart';
 import 'package:flutter_cac/data/entities/homework.dart';
+import 'package:flutter_cac/data/entities/user.dart';
 
 abstract class Repository {
   Future<List<Course>> getCourses();
@@ -32,7 +33,9 @@ abstract class Repository {
 
   Future<bool> switchThemeMode();
 
-  Future login(String number);
+  Future<User> getLoginUser();
+
+  Future<User> login(String userName, String password);
 
   Future<bool> isLogin();
 

@@ -22,7 +22,7 @@ import 'package:flutter_cac/data/source/repository.dart';
 class HomeworkViewModel extends ViewModel {
   static const String _errorMessage = "标题和内容不能为空";
 
-  HomeworkViewModel([Repository repository]) : super(repository);
+  HomeworkViewModel(Repository repository) : super(repository: repository);
 
   Future<String> saveHomework(String title, String content) async {
     String resultMessage = _errorMessage;

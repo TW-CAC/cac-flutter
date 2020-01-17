@@ -17,4 +17,6 @@
 class PreferencesKey {
   static const keyHomework = "key_homework";
   static const keyDarkMode = "key_dark_mode";
+  static const keyUser= "key_user";
+  static const keyAccessToken= "key_access_token";
 }
