@@ -38,6 +38,10 @@ class RemoteDataSource implements WebService {
   }
 
   RemoteDataSource.internal() {
+    _initHttpClient();
+  }
+
+  void _initHttpClient() {
     _client = Dio();
     _client.options.baseUrl = _baseUrl;
     _client.options.receiveTimeout = 1000 * 10; //10秒
@@ -51,6 +55,7 @@ class RemoteDataSource implements WebService {
     };
     _client.interceptors
         .add(LogInterceptor(requestBody: true, responseBody: true));
+
     _initHeaders();
   }
 
