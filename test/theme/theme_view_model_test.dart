@@ -22,9 +22,9 @@ import '../mock/mock_repository.dart';
 
 void main() {
   test('should return true when switchTheme called', () {
+    // Given
     final repository = MockRepository();
     when(repository.isDarkMode()).thenAnswer((_) => Future.value(false));
-    // Given
     final viewModel = ThemeViewModel(repository);
     bool isDarkMode = false;
     viewModel.addListener(() {
