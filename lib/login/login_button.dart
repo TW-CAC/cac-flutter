@@ -26,7 +26,7 @@ class LoginButton extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
+            padding: EdgeInsets.only(top: 8),
             child: RaisedButton(
               padding: EdgeInsets.symmetric(vertical: 8),
               color: Theme.of(context).accentColor,

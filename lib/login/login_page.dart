@@ -118,11 +118,26 @@ class _LoginPageState extends State<LoginPage> {
                 );
               },
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                FlatButton(
+                  onPressed: null,
+                  child: Text("忘记密码？"),
+                ),
+                FlatButton(
+                  onPressed: _onRegisterPressed,
+                  child: Text("注册"),
+                )
+              ],
+            ),
           ],
         ),
       ),
     );
   }
+
+  void _onRegisterPressed() {}
 
   void _onLoginPressed() async {
     // 清除焦点
