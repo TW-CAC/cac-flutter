@@ -18,6 +18,7 @@ import 'dart:io';
 
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_cac/common/preferences_key.dart';
 import 'package:flutter_cac/data/entities/course.dart';
 import 'package:flutter_cac/data/entities/homework.dart';
@@ -26,7 +27,7 @@ import 'package:flutter_cac/data/source/remote/web_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RemoteDataSource implements WebService {
-  static const String _baseUrl = "http://localhost:8081/api/";
+  static const String _baseUrl = "http://139.198.21.221:8081/api/";
   static const String _authorization = "Authorization";
 
   static final RemoteDataSource singleton = RemoteDataSource.internal();
@@ -44,8 +45,8 @@ class RemoteDataSource implements WebService {
   void _initHttpClient() {
     _client = Dio();
     _client.options.baseUrl = _baseUrl;
-    _client.options.receiveTimeout = 1000 * 10; //10秒
-    _client.options.connectTimeout = 1000 * 10; //10秒
+    _client.options.receiveTimeout = 1000 * 15; //15秒
+    _client.options.connectTimeout = 1000 * 15; //15秒
     (_client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (client) {
       client.badCertificateCallback =
@@ -62,6 +63,10 @@ class RemoteDataSource implements WebService {
   void _initHeaders() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accessToken = prefs.getString(PreferencesKey.keyAccessToken);
+    debugPrint("_initHeaders accessToken:$accessToken");
+    accessToken =
+        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxaW55dSIsImV4cCI6MTU3OTkyNjA0NSwiaWF0IjoxNTc5MzIxMjQ1fQ.mMGaosi1q4Z-yTM9CJiO6fo5LMENyeXnq7s5xr6vDx4bNkr9ITUuvMrn7cpaUZzVPFDkXcxPr6wJQ-UcluneXw";
+    _client.options.headers.putIfAbsent(_authorization, () => accessToken);
     if (accessToken != null && accessToken.isNotEmpty) {
       _client.options.headers.putIfAbsent(_authorization, () => accessToken);
     }
@@ -70,15 +75,19 @@ class RemoteDataSource implements WebService {
   @override
   Future<User> login(String userName, String password) async {
     User user;
-    FormData formData =
-        FormData.fromMap({"username": userName, "password": password});
-    Response response = await _client.post(
-      "rest/auth/user/login",
-      data: formData,
-    );
-    if (response.statusCode == HttpStatus.ok) {
-      user = User.fromJson(response.data);
+    try {
+      Response response = await _client.post(
+        "rest/auth/user/login",
+        data: {'userName': userName, 'password': password},
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        user = User.fromJson(response.data);
+      }
+    } on DioError catch (e) {
+      debugPrint(
+          "login userName:$userName,password:$password,error:${e.message}");
     }
+
     if (user != null &&
         user.accessToken != null &&
         user.accessToken.isNotEmpty) {
@@ -95,25 +104,38 @@ class RemoteDataSource implements WebService {
   @override
   Future<User> register(String userName, String password) async {
     User user;
-    FormData formData =
-        FormData.fromMap({"username": userName, "password": password});
-    Response response = await _client.post(
-      "rest/auth/user/register",
-      data: formData,
-    );
-    if (response.statusCode == HttpStatus.ok) {
-      user = User.fromJson(response.data);
+    try {
+      Response response = await _client.post(
+        "rest/auth/user/register",
+        data: {"username": userName, "password": password},
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        user = User.fromJson(response.data);
+      }
+    } on DioError catch (e) {
+      debugPrint(
+          "register userName:$userName,password:$password,error:${e.message}");
     }
+
     return user;
   }
 
   @override
   Future<List<Course>> getCourses() async {
-    /*Response response = await _client.get("course");
-    if (response.statusCode == HttpStatus.ok) {
-      
-    }*/
-    var questions = [
+    var courses;
+    try {
+      Response response = await _client.get("course");
+      if (response.statusCode == HttpStatus.ok) {
+        courses = (response.data as List).map((value) {
+          debugPrint("value:$value");
+          return Course.fromJson(value);
+        }).toList();
+      }
+    } on DioError catch (e) {
+      debugPrint("getCourses error:${e.message}");
+    }
+
+    /*var questions = [
       "《敏捷教练培养的“守、破、离”》读后感​",
       "《培养“教练团队”为什么是敏捷转型中的必经之路》读后感",
       "文化轰炸",
@@ -149,7 +171,7 @@ class RemoteDataSource implements WebService {
     });
     await Future.delayed(
       Duration(milliseconds: 2),
-    );
+    );*/
     return courses;
   }
 

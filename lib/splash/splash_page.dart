@@ -18,6 +18,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cac/common/routes.dart';
+import 'package:flutter_cac/login/login_view_model.dart';
+import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -101,7 +103,17 @@ class _SplashState extends State<SplashPage> {
     return Text(text);
   }
 
-  _launchMainPage() {
-    Navigator.pushReplacementNamed(context, Routes.main);
+  _launchMainPage() async {
+    LoginViewModel viewModel =
+        Provider.of<LoginViewModel>(context, listen: false);
+    bool isLogin = await viewModel.isLogin();
+
+    debugPrint("_launchMainPage isLogin:$isLogin");
+
+    if (isLogin) {
+      Navigator.pushReplacementNamed(context, Routes.main);
+    } else {
+      Navigator.pushReplacementNamed(context, Routes.login);
+    }
   }
 }

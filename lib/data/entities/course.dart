@@ -36,8 +36,9 @@ class Course {
       this.questions});
 
   factory Course.fromJson(Map<String, dynamic> json) {
-    List<User> subscribers =
-        (json['creator'] as List).map((item) => User.fromJson(item)).toList();
+    List<User> subscribers = (json['subscribers'] as List)
+        .map((item) => User.fromJson(item))
+        .toList();
     List<Homework> homework = (json['questions'] as List)
         .map((item) => Homework.fromJson(item))
         .toList();

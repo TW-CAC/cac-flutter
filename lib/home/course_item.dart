@@ -77,7 +77,9 @@ class CourseItem extends StatelessWidget {
                       flex: 1,
                       child: Padding(
                         padding: EdgeInsets.only(left: 8, bottom: 8),
-                        child: Text(course.creator.name),
+                        child: Text(course.creator.name == null
+                            ? "覃老板"
+                            : course.creator.name),
                       ),
                     ),
                     Expanded(

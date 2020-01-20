@@ -124,11 +124,11 @@ class _MainState extends State<MainPage> {
   void _showHomeworkPage() {
     LoginViewModel viewModel =
         Provider.of<LoginViewModel>(context, listen: false);
-    if (viewModel.isLogin) {
+   /* if (viewModel.isLogin) {
       Navigator.pushNamed(context, Routes.homework);
     } else {
       Navigator.pushNamed(context, Routes.login);
-    }
+    }*/
   }
 
   void _onTap(int index) {

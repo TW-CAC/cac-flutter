@@ -20,10 +20,6 @@ import 'package:flutter_cac/data/entities/user.dart';
 import 'package:flutter_cac/data/source/repository.dart';
 
 class LoginViewModel extends ViewModel {
-  bool _isLogin = false;
-
-  bool get isLogin => _isLogin;
-
   bool _isUserNameValid = false;
   bool _isPasswordValid = false;
   bool _isValid = false;
@@ -40,26 +36,26 @@ class LoginViewModel extends ViewModel {
     }
   }
 
-  LoginViewModel(Repository repository) : super(repository: repository) {
-    repository.isLogin().then((result) {
-      if (_isLogin != result) {
-        _isLogin = result;
-        notifyListeners();
-      }
-    });
+  LoginViewModel(Repository repository) : super(repository: repository);
+
+  Future<bool> isLogin() async {
+    bool isLogin = await repository.isLogin();
+
+    debugPrint("LoginViewModel isLogin:$isLogin");
+
+    return isLogin;
   }
 
   void loginByWeChat() {}
 
   Future<User> login(String userName, String password) async {
-    User user = await repository.login(userName, password).catchError((error) {
-      debugPrint("login error:${error.toString()}");
-    });
+    User user = await repository.login(userName, password);
     return user;
   }
 
   Future<User> register(String userName, String password) async {
-    User user = await repository.register(userName, password).catchError((error) {
+    User user =
+        await repository.register(userName, password).catchError((error) {
       debugPrint("reigster error:${error.toString()}");
     });
     return user;
@@ -85,7 +81,6 @@ class LoginViewModel extends ViewModel {
 
   void _checkValid() {
     bool result = _isUserNameValid && _isPasswordValid;
-    debugPrint("_checkValid result:$result");
     if (_isValid != result) {
       _isValid = result;
       notifyListeners();

@@ -52,6 +52,8 @@ class _HomePageState extends State<HomePage> {
               itemCount: viewModel.courses.length,
               itemBuilder: (BuildContext context, int position) {
                 final course = viewModel.courses[position];
+                debugPrint(
+                    "course :${course.title},subscribers:${course.subscribers.length},creator:${course.creator.name}");
                 return CourseItem(
                   onTap: _onTap,
                   onPressed: () {
@@ -74,10 +76,12 @@ class _HomePageState extends State<HomePage> {
     return viewModel.refresh();
   }
 
-  void _onPressed(Course course) {
+  void _onPressed(Course course) async {
     LoginViewModel viewModel =
         Provider.of<LoginViewModel>(context, listen: false);
-    if (viewModel.isLogin) {
+
+    bool isLogin = await viewModel.isLogin();
+    if (isLogin) {
       HomeViewModel viewModel =
           Provider.of<HomeViewModel>(context, listen: false);
       viewModel.subscribe(course);

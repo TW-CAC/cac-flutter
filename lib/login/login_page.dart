@@ -66,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        centerTitle: true,
         title: Text("登录"),
       ),
       resizeToAvoidBottomInset: false,
@@ -87,7 +88,6 @@ class _LoginPageState extends State<LoginPage> {
               cursorColor: Theme.of(context).accentColor,
               decoration: const InputDecoration(
                 icon: Icon(Icons.person),
-                hintText: "请输入您的账号",
                 labelText: "账号",
               ),
               keyboardType: TextInputType.text,
@@ -104,7 +104,6 @@ class _LoginPageState extends State<LoginPage> {
               cursorColor: Theme.of(context).accentColor,
               decoration: const InputDecoration(
                 icon: Icon(Icons.lock),
-                hintText: "请输入您的密码",
                 labelText: "密码",
               ),
               obscureText: true,
@@ -166,18 +165,24 @@ class _LoginPageState extends State<LoginPage> {
     if (result != null) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text("登录成功"),
-        duration: Duration(milliseconds: 1000),
+        duration: Duration(milliseconds: 300),
       ));
 
       Future.delayed(
-        Duration(milliseconds: 1000),
+        Duration(milliseconds: 300),
       ).whenComplete(() {
-        Navigator.of(context).pop();
+        if (ModalRoute.of(context).isFirst &&
+            ModalRoute.of(context).isCurrent &&
+            ModalRoute.of(context).isActive) {
+          Navigator.pushReplacementNamed(context, Routes.main);
+        } else {
+          Navigator.of(context).pop();
+        }
       });
     } else {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text("登录失败,请稍候重试。"),
-        duration: Duration(milliseconds: 1000),
+        duration: Duration(milliseconds: 300),
       ));
     }
   }

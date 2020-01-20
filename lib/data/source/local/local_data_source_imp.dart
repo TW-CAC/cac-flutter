@@ -73,8 +73,9 @@ class LocalDataSourceImp extends LocalDataSource {
     String result = sharedPreferences.getString(PreferencesKey.keyUser);
     if (result != null && result.isNotEmpty) {
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
   @override
@@ -96,6 +97,8 @@ class LocalDataSourceImp extends LocalDataSource {
   @override
   Future<bool> persistenceLoginUser(User user) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString(
+        PreferencesKey.keyAccessToken, user.accessToken);
     return sharedPreferences.setString(
         PreferencesKey.keyUser, user.toJson().toString());
   }
