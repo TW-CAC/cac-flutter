@@ -77,7 +77,7 @@ class CourseItem extends StatelessWidget {
                       flex: 1,
                       child: Padding(
                         padding: EdgeInsets.only(left: 8, bottom: 8),
-                        child: Text(course.creatorName),
+                        child: Text(course.creator.name),
                       ),
                     ),
                     Expanded(
@@ -85,7 +85,7 @@ class CourseItem extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.only(right: 8, bottom: 8),
                         child: Text(
-                          "${course.subscribeIds.length}人已订阅",
+                          "${course.subscribers.length}人已订阅",
                           textAlign: TextAlign.end,
                         ),
                       ),

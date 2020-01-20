@@ -56,7 +56,7 @@ class _HomeworkState extends State<HomeworkPage> {
     if (_homework != null) {
       setState(() {
         _titleController.text = _homework.title;
-        _contentController.text = _homework.content;
+        _contentController.text = _homework.description;
       });
     }
   }

@@ -17,18 +17,17 @@
 class User {
   final String id;
   final String name;
-  final String email;
+  final String accessToken;
 
-  User({this.id, this.name, this.email});
+  User({this.id, this.name, this.accessToken});
 
-  User.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'],
-        email = json['email'];
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+        id: json['id'],
+        name: json['userName'],
+        accessToken: json['accessToken']);
+  }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'email': email,
-      };
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'userName': name, 'accessToken': accessToken};
 }

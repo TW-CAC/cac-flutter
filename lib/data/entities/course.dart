@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
+import 'package:flutter_cac/data/entities/homework.dart';
+import 'package:flutter_cac/data/entities/user.dart';
+
 class Course {
   String id;
   String title;
   String description;
-  String createTime;
-  String creatorId;
-  String creatorName;
-  List<String> subscribeIds;
-  List<String> questions;
+  User creator;
+  List<User> subscribers;
+  List<Homework> questions;
 
   bool isSubscribed = false;
 
@@ -30,9 +31,22 @@ class Course {
       {this.id,
       this.title,
       this.description,
-      this.createTime,
-      this.creatorId,
-      this.creatorName,
-      this.subscribeIds,
+      this.creator,
+      this.subscribers,
       this.questions});
+
+  factory Course.fromJson(Map<String, dynamic> json) {
+    List<User> subscribers =
+        (json['creator'] as List).map((item) => User.fromJson(item)).toList();
+    List<Homework> homework = (json['questions'] as List)
+        .map((item) => Homework.fromJson(item))
+        .toList();
+    return Course(
+        id: json['id'],
+        title: json['title'],
+        description: json['description'],
+        creator: User.fromJson(json['creator']),
+        subscribers: subscribers,
+        questions: homework);
+  }
 }

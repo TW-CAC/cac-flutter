@@ -30,6 +30,8 @@ abstract class LocalDataSource {
 
   Future<User> getLoginUser();
 
+  Future<bool> persistenceLoginUser(User user);
+
   Future<bool> isLogin();
 
   Future<bool> logout();

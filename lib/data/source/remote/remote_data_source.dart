@@ -26,7 +26,8 @@ import 'package:flutter_cac/data/source/remote/web_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RemoteDataSource implements WebService {
-  static const String baseUrl = "http://localhost:8081/api/";
+  static const String _baseUrl = "http://localhost:8081/api/";
+  static const String _authorization = "Authorization";
 
   static final RemoteDataSource singleton = RemoteDataSource.internal();
 
@@ -38,7 +39,7 @@ class RemoteDataSource implements WebService {
 
   RemoteDataSource.internal() {
     _client = Dio();
-    _client.options.baseUrl = baseUrl;
+    _client.options.baseUrl = _baseUrl;
     _client.options.receiveTimeout = 1000 * 10; //10秒
     _client.options.connectTimeout = 1000 * 10; //10秒
     (_client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
@@ -57,38 +58,56 @@ class RemoteDataSource implements WebService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accessToken = prefs.getString(PreferencesKey.keyAccessToken);
     if (accessToken != null && accessToken.isNotEmpty) {
-      _client.options.headers = {"Authorization": "$accessToken"};
+      _client.options.headers.putIfAbsent(_authorization, () => accessToken);
     }
   }
 
   @override
   Future<User> login(String userName, String password) async {
+    User user;
     FormData formData =
         FormData.fromMap({"username": userName, "password": password});
     Response response = await _client.post(
       "rest/auth/user/login",
       data: formData,
     );
-    if (response.statusCode == HttpStatus.ok) {}
-    return null;
+    if (response.statusCode == HttpStatus.ok) {
+      user = User.fromJson(response.data);
+    }
+    if (user != null &&
+        user.accessToken != null &&
+        user.accessToken.isNotEmpty) {
+      // 更新access token
+      _client.options.headers.update(
+        _authorization,
+        (existedValue) => user.accessToken,
+        ifAbsent: () => user.accessToken,
+      );
+    }
+    return user;
   }
 
   @override
   Future<User> register(String userName, String password) async {
+    User user;
     FormData formData =
         FormData.fromMap({"username": userName, "password": password});
     Response response = await _client.post(
       "rest/auth/user/register",
       data: formData,
     );
-    if (response.statusCode == HttpStatus.ok) {}
-    return null;
+    if (response.statusCode == HttpStatus.ok) {
+      user = User.fromJson(response.data);
+    }
+    return user;
   }
 
   @override
   Future<List<Course>> getCourses() async {
     /*Response response = await _client.get("course");
-    if (response.statusCode == HttpStatus.ok) {}*/
+    if (response.statusCode == HttpStatus.ok) {
+      
+    }*/
     var questions = [
       "《敏捷教练培养的“守、破、离”》读后感​",
       "《培养“教练团队”为什么是敏捷转型中的必经之路》读后感",
@@ -103,15 +122,24 @@ class RemoteDataSource implements WebService {
       "《如何构建敏捷项目管理团队》读书笔记",
       "关于“度量”",
       "STAR模型"
-    ];
+    ].map((item) => Homework(title: item, description: "hha")).toList();
     var courses = List.generate(20, (index) {
       return Course(
         id: index.toString(),
         title: "CAC管理教练特种兵计划",
         description: "CAC管理教练特种兵计划日常作业",
         questions: questions,
-        creatorName: index % 2 == 0 ? "宇宙" : "覃宇",
-        subscribeIds: ["1", "2", "3"],
+        creator: index % 2 == 0
+            ? User(id: "0001", name: "宇宙")
+            : User(id: "0002", name: "覃宇"),
+        subscribers: [
+          User(id: "0003", name: "毛俊"),
+          User(id: "0004", name: "张涛"),
+          User(id: "0005", name: "KK"),
+          User(id: "0006", name: "黄俊彬"),
+          User(id: "0007", name: "刘利军"),
+          User(id: "0008", name: "王伟")
+        ],
       );
     });
     await Future.delayed(

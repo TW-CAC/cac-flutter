@@ -16,7 +16,6 @@
 
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_cac/common/preferences_key.dart';
 import 'package:flutter_cac/data/entities/homework.dart';
 import 'package:flutter_cac/data/entities/user.dart';
@@ -72,7 +71,6 @@ class LocalDataSourceImp extends LocalDataSource {
   Future<bool> isLogin() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String result = sharedPreferences.getString(PreferencesKey.keyUser);
-    debugPrint("koma result:$result");
     if (result != null && result.isNotEmpty) {
       return true;
     }
@@ -93,5 +91,12 @@ class LocalDataSourceImp extends LocalDataSource {
       return User.fromJson(jsonDecode(result));
     }
     return null;
+  }
+
+  @override
+  Future<bool> persistenceLoginUser(User user) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.setString(
+        PreferencesKey.keyUser, user.toJson().toString());
   }
 }

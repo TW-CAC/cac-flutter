@@ -53,10 +53,8 @@ class HomeworkViewModel extends ViewModel {
     return resultMessage;
   }
 
-  _buildHomework(String title, String content) => Homework(
-      title: title,
-      content: content,
-      createTime: DateTime.now().toIso8601String());
+  _buildHomework(String title, String content) =>
+      Homework(title: title, description: content);
 
   @override
   void dispose() {

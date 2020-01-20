@@ -141,7 +141,10 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<LoginViewModel>(context, listen: false);
     User result = await viewModel.login(
         _userNameController.text, _passwordController.text);
+
+    // 取消loading ui
     Navigator.of(context).pop();
+
     if (result != null) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text("登录成功"),

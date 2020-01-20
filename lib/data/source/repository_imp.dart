@@ -77,13 +77,17 @@ class RepositoryImp extends Repository {
   }
 
   @override
-  Future<User> login(String userName, String password) {
-    return _remoteDataSource.login(userName, password);
+  Future<User> login(String userName, String password) async {
+    User user = await _remoteDataSource.login(userName, password);
+    if (user != null) {
+      await _localDataSource.persistenceLoginUser(user);
+    }
+    return user;
   }
 
   @override
   Future<bool> logout() {
-    return null;
+    return _localDataSource.logout();
   }
 
   @override

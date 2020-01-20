@@ -30,30 +30,30 @@ void main() {
     );
 
     // When
-    Finder skipButton5 = find.text('跳过5');
+    Finder skipButton5 = find.text('跳过  5');
     // Then
     expect(skipButton5, findsOneWidget);
 
     // When
     await tester.pump(Duration(seconds: 1));
-    Finder skipButton4 = find.text('跳过4');
+    Finder skipButton4 = find.text('跳过  4');
     // Then
     expect(skipButton4, findsOneWidget);
 
     // When
     await tester.pump(Duration(seconds: 1));
-    Finder skipButton3 = find.text('跳过3');
+    Finder skipButton3 = find.text('跳过  3');
     // Then
     expect(skipButton3, findsOneWidget);
 
     // When
     await tester.pump(Duration(seconds: 1));
-    Finder skipButton2 = find.text('跳过2');
+    Finder skipButton2 = find.text('跳过  2');
     // Then
     expect(skipButton2, findsOneWidget);
 
     // When
-    Finder skipButton1 = find.text('跳过1');
+    Finder skipButton1 = find.text('跳过  1');
     await tester.pump(Duration(seconds: 1));
     // Then
     expect(skipButton1, findsOneWidget);

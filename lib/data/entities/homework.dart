@@ -16,20 +16,15 @@
 
 class Homework {
   String title;
-  String content;
-  String createTime;
+  String description;
 
-  Homework({this.title, this.content, this.createTime});
+  Homework({this.title, this.description});
 
   factory Homework.fromJson(Map<String, dynamic> json) {
-    return Homework(
-        title: json['title'],
-        content: json['content'],
-        createTime: json['create_time']);
+    return Homework(title: json['title'], description: json['description']);
   }
 
-  Map<String, dynamic> toJson() =>
-      {'title': title, 'content': content, 'create_time': createTime};
+  Map<String, dynamic> toJson() => {'title': title, 'description': description};
 
   @override
   String toString() {

@@ -94,8 +94,7 @@ void main() {
       // Given
       final repository = MockRepository();
       final viewModel = HomeworkViewModel(repository);
-      Homework homework =
-          Homework(title: "title", content: "content", createTime: "123");
+      Homework homework = Homework(title: "title", description: "content");
       when(repository.getDraftHomework())
           .thenAnswer((_) => Future.value(homework));
       // When
