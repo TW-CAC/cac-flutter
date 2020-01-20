@@ -15,6 +15,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cac/common/routes.dart';
 import 'package:flutter_cac/common/strings.dart';
 
 class MinePage extends StatefulWidget {
@@ -30,6 +31,54 @@ class _MinePageState extends State<MinePage> {
         centerTitle: true,
         title: Text(Strings.mine),
       ),
+      body: new Column(children: <Widget>[
+        new Row(
+          children: <Widget>[
+            new Container(
+              margin: const EdgeInsets.only(left: 20, top: 20),
+              child: new CircleAvatar(
+                child: new Text("Allen"),
+              ),
+            ),
+            new Expanded(
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Container(
+                    margin: const EdgeInsets.only(top: 20, left: 10),
+                    child: new Text("15019011123",
+                        style: Theme.of(context).textTheme.subhead),
+                  ),
+                  new Container(
+                    margin: const EdgeInsets.only(top: 5.0, left: 10),
+                    child: new Text("CAC技术教练"),
+                  )
+                ],
+              ),
+            ),
+            new Container(
+              margin: const EdgeInsets.only(right: 20, top: 20),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: RaisedButton(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  color: Theme.of(context).accentColor,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: Text(
+                    "退出",
+                    style:
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 24),
+                  ),
+                  onPressed: () => Navigator.pushNamed(context, Routes.login),
+                ),
+              ),
+            ),
+          ],
+        )
+      ]),
     );
   }
 }

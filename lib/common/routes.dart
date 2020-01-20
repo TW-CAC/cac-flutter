@@ -23,4 +23,5 @@ class Routes {
   static const String assignment = "/assignment";
   static const String cart = "/cart";
   static const String homework = "/homework";
+  static const String register = "/register";
 }

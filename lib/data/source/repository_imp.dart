@@ -86,6 +86,11 @@ class RepositoryImp extends Repository {
   }
 
   @override
+  Future<User> register(String userName, String password) {
+    return _remoteDataSource.register(userName, password);
+  }
+
+  @override
   Future<bool> logout() {
     return _localDataSource.logout();
   }

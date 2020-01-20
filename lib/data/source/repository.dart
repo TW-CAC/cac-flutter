@@ -40,4 +40,6 @@ abstract class Repository {
   Future<bool> isLogin();
 
   Future<bool> logout();
+
+  Future<User> register(String userName, String password);
 }

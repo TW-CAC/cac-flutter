@@ -15,20 +15,18 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_cac/common/routes.dart';
 import 'package:flutter_cac/data/entities/user.dart';
-import 'package:flutter_cac/login/login_button.dart';
+import 'package:flutter_cac/login/login_view_model.dart';
+import 'package:flutter_cac/register/register_button.dart';
 import 'package:flutter_cac/widget/loading.dart';
 import 'package:provider/provider.dart';
 
-import 'login_view_model.dart';
-
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _userNameFocusNode = FocusNode();
@@ -66,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("登录"),
+        title: Text("注册"),
       ),
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -114,32 +112,15 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Consumer<LoginViewModel>(
               builder: (context, viewModel, child) {
-                return LoginButton(
+                return RegisterButton(
                   onPressed: viewModel.isValid ? _onLoginPressed : null,
                 );
               },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                FlatButton(
-                  onPressed: null,
-                  child: Text("忘记密码？"),
-                ),
-                FlatButton(
-                  onPressed: _onRegisterPressed,
-                  child: Text("注册"),
-                )
-              ],
             ),
           ],
         ),
       ),
     );
-  }
-
-  void _onRegisterPressed() {
-    Navigator.pushNamed(context, Routes.register);
   }
 
   void _onLoginPressed() async {
@@ -151,21 +132,18 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       barrierDismissible: false,
       child: Loading(
-        content: "登录中，请稍候...",
+        content: "注册中，请稍候...",
       ),
     );
 
     LoginViewModel viewModel =
         Provider.of<LoginViewModel>(context, listen: false);
-    User result = await viewModel.login(
+    User result = await viewModel.register(
         _userNameController.text, _passwordController.text);
-
-    // 取消loading ui
     Navigator.of(context).pop();
-
     if (result != null) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("登录成功"),
+        content: Text("注册成功"),
         duration: Duration(milliseconds: 1000),
       ));
 
@@ -176,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
       });
     } else {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("登录失败,请稍候重试。"),
+        content: Text("注册失败,请稍候重试。"),
         duration: Duration(milliseconds: 1000),
       ));
     }

@@ -133,10 +133,18 @@ class _MainState extends State<MainPage> {
 
   void _onTap(int index) {
     setState(() {
-      _currentIndex = index;
 
+//      if (index == 3) {
+//        LoginViewModel viewModel =
+//            Provider.of<LoginViewModel>(context, listen: false);
+//        if (!viewModel.isLogin) {
+//          Navigator.pushNamed(context, Routes.login);
+//          return;
+//        }
+//      }
       _pageController.animateToPage(index,
           duration: Duration(milliseconds: 200), curve: Curves.ease);
+      _currentIndex = index;
     });
   }
 

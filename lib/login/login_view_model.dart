@@ -58,6 +58,13 @@ class LoginViewModel extends ViewModel {
     return user;
   }
 
+  Future<User> register(String userName, String password) async {
+    User user = await repository.register(userName, password).catchError((error) {
+      debugPrint("reigster error:${error.toString()}");
+    });
+    return user;
+  }
+
   void checkUserName(String userName) {
     if (userName.trim().isNotEmpty && userName.trim().length > 0) {
       _isUserNameValid = true;
