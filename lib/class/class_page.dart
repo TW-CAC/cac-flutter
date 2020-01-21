@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 import 'package:flutter/material.dart';
+import 'package:flutter_cac/common/routes.dart';
+import 'package:flutter_cac/common/strings.dart';
+import 'package:flutter_cac/login/login_view_model.dart';
+import 'package:provider/provider.dart';
 
 class ClassPage extends StatefulWidget {
   @override
@@ -38,12 +42,32 @@ class _ClassPageState extends State<ClassPage> {
         ],
       ),
       body: Column(
-        children: <Widget>[
-
-        ],
+        children: <Widget>[],
       ),
+      floatingActionButton: _buildFloatActionButton(),
     );
   }
 
   void _onUpload() {}
+
+  FloatingActionButton _buildFloatActionButton() {
+    return FloatingActionButton.extended(
+      icon: Icon(Icons.add),
+      label: Text(Strings.homework),
+      onPressed: () {
+        _showHomeworkPage();
+      },
+    );
+  }
+
+  void _showHomeworkPage() async {
+    LoginViewModel viewModel =
+        Provider.of<LoginViewModel>(context, listen: false);
+    bool result = await viewModel.isLogin();
+    if (result) {
+      Navigator.pushNamed(context, Routes.homework);
+    } else {
+      Navigator.pushNamed(context, Routes.login);
+    }
+  }
 }

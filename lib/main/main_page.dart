@@ -17,12 +17,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cac/assignment/assignment_page.dart';
 import 'package:flutter_cac/cart/shopping_cart.dart';
-import 'package:flutter_cac/common/routes.dart';
 import 'package:flutter_cac/common/strings.dart';
 import 'package:flutter_cac/home/home_page.dart';
-import 'package:flutter_cac/login/login_view_model.dart';
 import 'package:flutter_cac/mine/mine_page.dart';
-import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -85,19 +82,8 @@ class _MainState extends State<MainPage> {
           showUnselectedLabels: true,
           type: BottomNavigationBarType.fixed,
         ),
-        floatingActionButton: _buildFloatActionButton(),
       ),
       onWillPop: _onWillPop,
-    );
-  }
-
-  FloatingActionButton _buildFloatActionButton() {
-    return FloatingActionButton.extended(
-      icon: Icon(Icons.add),
-      label: Text(Strings.homework),
-      onPressed: () {
-        _showHomeworkPage();
-      },
     );
   }
 
@@ -121,19 +107,8 @@ class _MainState extends State<MainPage> {
     );
   }
 
-  void _showHomeworkPage() {
-    LoginViewModel viewModel =
-        Provider.of<LoginViewModel>(context, listen: false);
-   /* if (viewModel.isLogin) {
-      Navigator.pushNamed(context, Routes.homework);
-    } else {
-      Navigator.pushNamed(context, Routes.login);
-    }*/
-  }
-
   void _onTap(int index) {
     setState(() {
-
 //      if (index == 3) {
 //        LoginViewModel viewModel =
 //            Provider.of<LoginViewModel>(context, listen: false);

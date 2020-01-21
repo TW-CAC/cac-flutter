@@ -17,7 +17,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cac/data/entities/user.dart';
 import 'package:flutter_cac/login/login_view_model.dart';
-import 'package:flutter_cac/register/register_button.dart';
+import 'package:flutter_cac/widget/expansion_button.dart';
 import 'package:flutter_cac/widget/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -112,7 +112,8 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             Consumer<LoginViewModel>(
               builder: (context, viewModel, child) {
-                return RegisterButton(
+                return ExpansionButton(
+                  label: "注册并登录",
                   onPressed: viewModel.isValid ? _onLoginPressed : null,
                 );
               },

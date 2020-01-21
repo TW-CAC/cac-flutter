@@ -19,6 +19,10 @@ import 'package:flutter_cac/data/entities/course.dart';
 import 'package:flutter_cac/data/source/repository.dart';
 
 class HomeViewModel extends ViewModel {
+  bool _isFirstLoading = true;
+
+  bool get isFirstLoading => _isFirstLoading;
+
   var _courses = List<Course>();
 
   List<Course> get courses => _courses;
@@ -33,6 +37,7 @@ class HomeViewModel extends ViewModel {
     var result = await repository.getCourses();
     _courses.clear();
     _courses.addAll(result);
+    _isFirstLoading = false;
     notifyListeners();
     return null;
   }

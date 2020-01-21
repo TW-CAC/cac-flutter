@@ -44,9 +44,25 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: Text(Strings.home),
       ),
-      body: RefreshIndicator(
-        child: Consumer<HomeViewModel>(
-          builder: (context, viewModel, child) {
+      body: buildBody(),
+    );
+  }
+
+  RefreshIndicator buildBody() {
+    return RefreshIndicator(
+      child: Consumer<HomeViewModel>(
+        builder: (context, viewModel, child) {
+          if (viewModel.isFirstLoading) {
+            return Center(
+              child: SizedBox(
+                height: 100,
+                width: 100,
+                child: CircularProgressIndicator(
+                  strokeWidth: 8,
+                ),
+              ),
+            );
+          } else {
             return ListView.builder(
               padding: const EdgeInsets.all(8),
               itemCount: viewModel.courses.length,
@@ -63,10 +79,10 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             );
-          },
-        ),
-        onRefresh: _onRefresh,
+          }
+        },
       ),
+      onRefresh: _onRefresh,
     );
   }
 

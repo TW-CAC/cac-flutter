@@ -15,10 +15,14 @@
  */
 import 'package:flutter/material.dart';
 
-class LoginButton extends StatelessWidget {
+class ExpansionButton extends StatelessWidget {
+  final String label;
+
   final VoidCallback onPressed;
 
-  const LoginButton({Key key, @required this.onPressed}) : super(key: key);
+  const ExpansionButton(
+      {Key key, @required this.label, @required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,7 @@ class LoginButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4.0),
               ),
               child: Text(
-                "登录",
+                label,
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 24),
               ),
               onPressed: onPressed,
