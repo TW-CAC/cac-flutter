@@ -64,9 +64,9 @@ class RemoteDataSource implements WebService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accessToken = prefs.getString(PreferencesKey.keyAccessToken);
     debugPrint("_initHeaders accessToken:$accessToken");
-    accessToken =
-        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxaW55dSIsImV4cCI6MTU3OTkyNjA0NSwiaWF0IjoxNTc5MzIxMjQ1fQ.mMGaosi1q4Z-yTM9CJiO6fo5LMENyeXnq7s5xr6vDx4bNkr9ITUuvMrn7cpaUZzVPFDkXcxPr6wJQ-UcluneXw";
-    _client.options.headers.putIfAbsent(_authorization, () => accessToken);
+    // accessToken =
+    //     "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxaW55dSIsImV4cCI6MTU3OTkyNjA0NSwiaWF0IjoxNTc5MzIxMjQ1fQ.mMGaosi1q4Z-yTM9CJiO6fo5LMENyeXnq7s5xr6vDx4bNkr9ITUuvMrn7cpaUZzVPFDkXcxPr6wJQ-UcluneXw";
+    // _client.options.headers.putIfAbsent(_authorization, () => accessToken);
     if (accessToken != null && accessToken.isNotEmpty) {
       _client.options.headers.putIfAbsent(_authorization, () => accessToken);
     }
@@ -88,6 +88,11 @@ class RemoteDataSource implements WebService {
           "login userName:$userName,password:$password,error:${e.message}");
     }
 
+    _updateAccessToken(user);
+    return user;
+  }
+
+  void _updateAccessToken(User user) {
     if (user != null &&
         user.accessToken != null &&
         user.accessToken.isNotEmpty) {
@@ -98,7 +103,6 @@ class RemoteDataSource implements WebService {
         ifAbsent: () => user.accessToken,
       );
     }
-    return user;
   }
 
   @override
@@ -107,7 +111,7 @@ class RemoteDataSource implements WebService {
     try {
       Response response = await _client.post(
         "rest/auth/user/register",
-        data: {"username": userName, "password": password},
+        data: {"userName": userName, "password": password},
       );
       if (response.statusCode == HttpStatus.ok) {
         user = User.fromJson(response.data);
@@ -117,6 +121,7 @@ class RemoteDataSource implements WebService {
           "register userName:$userName,password:$password,error:${e.message}");
     }
 
+    _updateAccessToken(user);
     return user;
   }
 
